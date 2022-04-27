@@ -1,200 +1,334 @@
-{
-  "nbformat": 4,
-  "nbformat_minor": 0,
-  "metadata": {
-    "colab": {
-      "name": "projet algo mémoire.ipynb",
-      "provenance": [],
-      "collapsed_sections": [],
-      "include_colab_link": true
-    },
-    "kernelspec": {
-      "name": "python3",
-      "display_name": "Python 3"
-    },
-    "language_info": {
-      "name": "python"
-    }
-  },
-  "cells": [
-    {
-      "cell_type": "markdown",
-      "metadata": {
-        "id": "view-in-github",
-        "colab_type": "text"
-      },
-      "source": [
-        "<a href=\"https://colab.research.google.com/github/KangooCode/TweetsScraper/blob/main/Scrap.csv\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
-      ]
-    },
-    {
-      "cell_type": "code",
-      "source": [
-        "!pwd"
-      ],
-      "metadata": {
-        "id": "rONzEIdy25J1",
-        "outputId": "93789187-4de5-4979-a2a6-ef1784614b30",
-        "colab": {
-          "base_uri": "https://localhost:8080/"
-        }
-      },
-      "execution_count": 7,
-      "outputs": [
-        {
-          "output_type": "stream",
-          "name": "stdout",
-          "text": [
-            "/content\n"
-          ]
-        }
-      ]
-    },
-    {
-      "cell_type": "code",
-      "source": [
-        "!ls"
-      ],
-      "metadata": {
-        "id": "isLzE3pA2-MW",
-        "outputId": "4276a7cc-6987-42da-e646-ca9e8205bc69",
-        "colab": {
-          "base_uri": "https://localhost:8080/"
-        }
-      },
-      "execution_count": 8,
-      "outputs": [
-        {
-          "output_type": "stream",
-          "name": "stdout",
-          "text": [
-            "drive  sample_data\n"
-          ]
-        }
-      ]
-    },
-    {
-      "cell_type": "code",
-      "source": [
-        "!apt-get -q install python3.8"
-      ],
-      "metadata": {
-        "colab": {
-          "base_uri": "https://localhost:8080/"
-        },
-        "id": "YZdQkWVcpp7t",
-        "outputId": "d7efe833-ed67-44cc-8808-fd20be7458d2"
-      },
-      "execution_count": 3,
-      "outputs": [
-        {
-          "output_type": "stream",
-          "name": "stdout",
-          "text": [
-            "Reading package lists...\n",
-            "Building dependency tree...\n",
-            "Reading state information...\n",
-            "The following additional packages will be installed:\n",
-            "  libpython3.8-minimal libpython3.8-stdlib python3.8-minimal\n",
-            "Suggested packages:\n",
-            "  python3.8-venv binfmt-support\n",
-            "The following NEW packages will be installed:\n",
-            "  libpython3.8-minimal libpython3.8-stdlib python3.8 python3.8-minimal\n",
-            "0 upgraded, 4 newly installed, 0 to remove and 41 not upgraded.\n",
-            "Need to get 4,691 kB of archives.\n",
-            "After this operation, 18.5 MB of additional disk space will be used.\n",
-            "Get:1 http://ppa.launchpad.net/deadsnakes/ppa/ubuntu bionic/main amd64 libpython3.8-minimal amd64 3.8.13-1+bionic2 [762 kB]\n",
-            "Get:2 http://ppa.launchpad.net/deadsnakes/ppa/ubuntu bionic/main amd64 python3.8-minimal amd64 3.8.13-1+bionic2 [1,837 kB]\n",
-            "Get:3 http://ppa.launchpad.net/deadsnakes/ppa/ubuntu bionic/main amd64 libpython3.8-stdlib amd64 3.8.13-1+bionic2 [1,657 kB]\n",
-            "Get:4 http://ppa.launchpad.net/deadsnakes/ppa/ubuntu bionic/main amd64 python3.8 amd64 3.8.13-1+bionic2 [434 kB]\n",
-            "Fetched 4,691 kB in 5s (1,040 kB/s)\n",
-            "Selecting previously unselected package libpython3.8-minimal:amd64.\n",
-            "(Reading database ... 155514 files and directories currently installed.)\n",
-            "Preparing to unpack .../libpython3.8-minimal_3.8.13-1+bionic2_amd64.deb ...\n",
-            "Unpacking libpython3.8-minimal:amd64 (3.8.13-1+bionic2) ...\n",
-            "Selecting previously unselected package python3.8-minimal.\n",
-            "Preparing to unpack .../python3.8-minimal_3.8.13-1+bionic2_amd64.deb ...\n",
-            "Unpacking python3.8-minimal (3.8.13-1+bionic2) ...\n",
-            "Selecting previously unselected package libpython3.8-stdlib:amd64.\n",
-            "Preparing to unpack .../libpython3.8-stdlib_3.8.13-1+bionic2_amd64.deb ...\n",
-            "Unpacking libpython3.8-stdlib:amd64 (3.8.13-1+bionic2) ...\n",
-            "Selecting previously unselected package python3.8.\n",
-            "Preparing to unpack .../python3.8_3.8.13-1+bionic2_amd64.deb ...\n",
-            "Unpacking python3.8 (3.8.13-1+bionic2) ...\n",
-            "Setting up libpython3.8-minimal:amd64 (3.8.13-1+bionic2) ...\n",
-            "Setting up python3.8-minimal (3.8.13-1+bionic2) ...\n",
-            "Setting up libpython3.8-stdlib:amd64 (3.8.13-1+bionic2) ...\n",
-            "Setting up python3.8 (3.8.13-1+bionic2) ...\n",
-            "Processing triggers for mime-support (3.60ubuntu1) ...\n",
-            "Processing triggers for man-db (2.8.3-2ubuntu0.1) ...\n"
-          ]
-        }
-      ]
-    },
-    {
-      "cell_type": "code",
-      "source": [
-        "from google.colab import drive\n",
-        "drive.mount('/content/drive')"
-      ],
-      "metadata": {
-        "colab": {
-          "base_uri": "https://localhost:8080/"
-        },
-        "id": "jD70ZejHxhFQ",
-        "outputId": "3b8b306f-4722-4ce1-d6c3-8a8ae3e6485a"
-      },
-      "execution_count": 4,
-      "outputs": [
-        {
-          "output_type": "stream",
-          "name": "stdout",
-          "text": [
-            "Drive already mounted at /content/drive; to attempt to forcibly remount, call drive.mount(\"/content/drive\", force_remount=True).\n"
-          ]
-        }
-      ]
-    },
-    {
-      "cell_type": "code",
-      "source": [
-        "!pip3 install -q snscrape\n",
-        "!pip3 install -q pandas"
-      ],
-      "metadata": {
-        "id": "5szdatANmnn7"
-      },
-      "execution_count": 5,
-      "outputs": []
-    },
-    {
-      "cell_type": "code",
-      "execution_count": 9,
-      "metadata": {
-        "id": "udqyLeHvFkAt"
-      },
-      "outputs": [],
-      "source": [
-        "#Scraper de tweets\n",
-        "\n",
-        "from snscrape.modules import twitter as sntwitter\n",
-        "import pandas as pd\n",
-        "\n",
-        "query = \"porn sex nude child\"\n",
-        "tweets = []\n",
-        "limit = 200\n",
-        "\n",
-        "for tweet in sntwitter.TwitterSearchScraper(query).get_items():\n",
-        "\n",
-        "  if len(tweets) == limit:\n",
-        "    break\n",
-        "  else:\n",
-        "    tweets.append([tweet.date, tweet.username, tweet.content])\n",
-        "\n",
-        "df = pd.DataFrame(tweets, columns=['Date', 'Username', 'Content'])\n",
-        "\n",
-        "df.to_csv('Scrap.csv')"
-      ]
-    }
-  ]
-}
+,Date,Username,Content
+0,2022-03-30 15:05:15+00:00,RobertTGarrett,"Judge Jack asks her monitors to make criminal referral to US attorney for Western District of Texas on possible production of child porn at The Refuge--&amp; possible obstruction of justice.
+
+And if the nude photos incident 'classifies' as sex trafficking, 'sex trafficking as well.' https://t.co/SZTqMQa4OO"
+1,2021-10-09 14:10:33+00:00,greg_doucette,"Cops committing sex crimes involving children is common
+
+Setting up hidden cameras to record a 14-year-old girl in the nude, then leaving the SD card with his child porn stash on the floor of the Police Department locker room:
+https://t.co/FiGGjMdqYo"
+2,2021-09-23 10:48:56+00:00,beesox,@mysticmeance Really? You think it's wrong to prevent teens being charged with sexual assault and possession of child porn because they have sex and send nudes to each other? How considerate and intelligent you are
+3,2021-09-21 20:24:48+00:00,Purgenta0,"@average_use @frazzled_july23 if its a depiction of a being under the age of consent in ANY sexual way whether it be them nude, having sex, or just them in a sexual pose designed with the intent of it being sexual, its child porn/suggestive art of a child."
+4,2021-09-15 16:06:39+00:00,Yamitora1,@Tanner4b7973 @Christo75299920 @johnnycford @JoelGut57109808 @kennedybattalio @Timcast every year kids are charged for distributing child porn because they send/Receive nudes to their Bfs and GFs. There are also guys who are sent to prison for turning 18 and having sex with their girlfriends in states without Romeo Juliet laws. Its a mess a lot of the time.
+5,2021-09-09 03:49:13+00:00,JOHIO81,@Project_NoSpank @JQuest1985 @SamsonStreet3 @AntonRudebeck @PatrickReedFan @barstoolsports Anything can turn out to be something terrible. If a parent is convicted of child porn/sex abuse for posting videos of their children bathing nude to sex sites does that mean no parent should be allowed to help their child bathe? You seem to be really reaching here.
+6,2021-09-07 13:57:27+00:00,DemonicDeerHH,"@Zheng_The_Panda I'm sorry... But
+
+Just
+Because
+It
+Is
+Legal
+Somewhere
+Doesn't
+Make
+It
+Right
+
+Plus, age of consent doesn't say that someone is an adult. It says when someone can consent to sex. If you post a nude picture of a 16 year old when the age of consent is 16, guess what? Child porn. -"
+7,2021-08-27 14:49:19+00:00,Papa_Hentai_,"@mackb00k @fIuffylilbee @joe16902 Yes, it is child porn in the legal sense of &lt;18. Saying that, 17 year olds sending nudes and having sex is hardly on the same level as when 10 year olds do it. While you can argue by legal definition alone, you lack proper context and nuance. Don't forget, she was barely under 18"
+8,2021-08-26 12:06:18+00:00,lizbruh1,@TheBadComedian2 wait till you find out laws for nudes and child porn aren't the same as laws regarding consent to sex
+9,2021-08-25 17:30:17+00:00,23WIFR,"ICONIC COVER, OR CHILD PORN? Kurt Cobain “chose the image depicting Spencer — like a sex worker— grabbing for a dollar bill that is positioned dangling from a fishhook in front of his nude body with his penis explicitly displayed,” the lawsuit said. https://t.co/EVVVl07BBj"
+10,2021-08-25 14:41:16+00:00,RIOldFolksHome,"@McCannSportsLaw @JimmyTraina Does the child porn SOL only start when one is no longer a minor?
+
+The crazier thing is the theory of his claim - see the Variety article. To defeat the fact that non-sexualized nude pictures aren't CP he claims the dollar bill makes the infant seem like a sex worker. Seriously!"
+11,2021-08-20 19:16:14+00:00,obloquar,"@greatest_jaggi yeah i mean personally i want to see sex trafficking tackled as a primary concern, instead of ppl pushing it to the side and acting like the REAL issue is that ppl can't sell nudes on an app filled with child porn anymore"
+12,2021-08-20 17:41:57+00:00,FoxyPrinceJosh,"@Matty7even @PupStrings Yeah I just looked up the removal sexual content on only fans, it looks like it might be more of purge of policy because they told BBC they still allow some nude content. Also it seems decision isn't sourrnd in invalidating sex work but crack down on child porn."
+13,2021-08-19 23:42:55+00:00,GS_Maxxx,"@sleepisocialist They aren’t banning all sex work. Read the articles. Not only have they not finalized their rules, you’ll 100% still be able to post nudes. This is to curb child porn."
+14,2021-08-17 16:23:03+00:00,serv1ngcunt,@MaxOmegaYT @InsertN84156703 @Vecyoworks because they don’t care about victims in the courts lol. she was legally underage; not for sex but not nudes. you have to be over 18 otherwise it’s classified as child porn.
+15,2021-08-15 22:55:46+00:00,Ally030810,@chosolvhtl Bro fr my cousin almost sat out life cause her family said how can he not know she's a minor talking about he got child porn cause of her nudes and he had sex with her so that's  Sagitory rape
+16,2021-08-14 04:52:02+00:00,L4UNDRYBE4R,"@scp_dr @simpingboisinc Actually that's not true. Romeo and juliet laws don't apply over the internet and they don't apply to child porn at all. Even if I [16] was to consensually send nudes to another 16 year old, we have both broken the law and can be put under a sex offender registry."
+17,2021-08-14 04:48:57+00:00,L4UNDRYBE4R,@illnyss @Kirby01894440 @simpingboisinc actually it doesn't matter because any nudes of a minor is considered child porn. if i [16] sent nudes to another 16 year old both of us could STILL be put on a sex offender registry for distribution and collection of child porn.
+18,2021-07-18 18:29:27+00:00,InhellJourney,Have trouble understanding conservative right's concern. They supported &amp; cheered a 'first lady' with a professional portfolio of nude pics showing her simulating soft porn actions.  Also supporting at least 1 accused child rapists &amp; sex trafficker. https://t.co/SXShfehD5s
+19,2021-07-17 00:36:26+00:00,NeurodivergentB,"“-New York’s child porn laws didn’t apply to Bianca Devins because she was 17 at the time of the murder so therefore, they had the right to disseminate her nude images and sex video.”
+
+BIANCA DEVINS WAS A CHILD, GODDAMNIT-
+#JusticeforBiancaDevins https://t.co/s7iPqke9Uq"
+20,2021-07-13 17:07:56+00:00,AngryNMTeacher,"Matt, you sure you're one to talk about ""Women's Rights""?
+
+✅ Voted against REVENGE PORN bill: ""against my 1A rights""
+✅ Allegedly shares private nudes of women on house floor
+✅ Allegedly paid a child for sex
+
+@mattgaetz @RepJerryNadler @BurgessOwens @RepAndyBiggsAZ @Jim_Jordan"
+21,2021-07-11 13:20:34+00:00,lana4_prez,@DARKSEAWARRIORS That's the thing I know they do l. Hell I did😏But it is child porn for them to display the sex scenes don't you think? I feel like...it's a child having sex. I mean those same kids can get S O charge if they share their nudes to each other. So....👀 No more child porn PLEEEEEASE
+22,2021-07-10 14:05:57+00:00,BookGeek809,@ChaseTMAnderson Also if you are under age dont send nudes because its consider a distribution and receiving of child porn and you could possibly end up as a sex offender.
+23,2021-07-06 15:21:40+00:00,hamaduet,"#BanHumStyleAward &amp; turn Pakistan into Banistan!
+
+TikTok is banned
+Child Porn open
+
+Bear is banned
+Ice/Heroin open
+
+Sex among youngers is banned
+Sodomy &amp; Rape is open
+
+Evolution Theory is banned
+Apes re free to run seminaries
+
+Fashion be banned
+Wat abt Stage Drama Nude Dances?"
+24,2021-06-28 20:31:54+00:00,smolbeensh,"@TastyJingerTae @venusnamjoonn even if i say it in english u wouldn't understand that nude is art. bc is chose not to. and sex work does not represent in porn. tell that to ur @$$ ""but porn is industry blah blah"" CHILD EXPLOITATION FOR MONEY?????? THATS A CRIME HONEY."
+25,2021-06-25 02:25:22+00:00,BobRosS50018645,@johndbrownart @OfficiallyPhicc @SleepySuits @ekrisena @CallMeCarsonYT Child porn? But perfectly fine consensual sex between the two if in person it’s an outdated law. If I take a nude of myself an hour before my birthday isn’t that child porn?
+26,2021-06-21 18:15:29+00:00,Dominic88349978,"@FbrAndrew @VaporeonStan Yeah but you also have to keep in mind that we're Carson is they're legally allowed to have sex, it's only illegal for them to exchange nudes because child porn could be easier to distribute."
+27,2021-06-20 20:00:48+00:00,DayHadley,@CrazyAlexx0 @SmallBeefus @CallMeCarsonYT Romeo and Juliet laws is for sex and in the same state they were not in the same state and they sent nudes which is child porn
+28,2021-06-20 18:32:19+00:00,kinda_dim,"@NCPIII @Yeee09478656 @CallMeCarsonYT Age of consent applies to sex only, mate. Child porn is child porn across the board. Under 18 pornography is illegal everywhere, even if it's minors sending nudes to other minors lol. It's a really dumb logical fallacy in the law, but it's there nonetheless"
+29,2021-06-20 15:41:16+00:00,CTOMMY_DREAMXD,"@DaddyKun10 @Lotad69 @CallMeCarsonYT Thats only for non recorded sex, not nudes, its still child porn and still illegal in every state."
+30,2021-06-20 05:17:51+00:00,badbuddynanon,"what i observed: it's absurd that in some states minors having consensual sex can be convicted for sexting. I get that's it's considered child porn, but they're both minors. Two minors sexting isn't the same as a 40 yo man possessing nudes of a 6yo"
+31,2021-06-20 04:30:55+00:00,cowboyyysss,"@Distronical @httpswilbur @Ranboosaysstuff @ranaltboo carson and the girls situation wasnt “sex” it was exchanging of nudes. nudes arent “consensual sex”. she was 17, making the nudes child porn:/ stop bending over backwards to protect callmecarson??"
+32,2021-06-13 04:25:06+00:00,WarKittyGehenna,@starlite_vero @ARTKacie @EmilyArtful The underage nude threat too. That's considered child porn and would get her on the sex offender registry and completely ruin her life
+33,2021-06-12 19:09:16+00:00,usedacidtab,@TyzthePhoenix @_Hillarybanks @youngpardinho @MarWash_art @odiyicee a 16-17 year old is a minor no matter the age of consent making it illegal for someone who is not 18 n under to engage in sex just like how 16-17 year old’s nudes are child porn
+34,2021-06-06 16:07:22+00:00,victoria28377,"QUESTION YALL HIT MY INBOX !!
+WHAT YALL THINK OF A SO CALLED 16 YEAR THAT BEGGS FOR PORN FROM GROWN MEN THAT SHE KNOWS THEY AGE,ENGAGING IN PHONE SEX, THREESOMES WITH HIM &amp; HIS WIFE,SEND NUDES, BUT THEN CRYS WOLF &amp; SAYS BUT IM A CHILD!! BUTCH U KNEW U WAS A CHILD WHEN U DIDIT"
+35,2021-06-06 15:05:42+00:00,2AforeverDusty,"@DebbiePink702lv @OneWatchdog @sleepgram I believe you might be terribly naive. I'm sure the TOS doesn't allow porn, child abuse, nudity, etc., but it is definitely on twitter. People will send nude pics for a follow. I once saw a 5 year being raped on twitter. Whole section of twitter for explicit sex. TOS IS BS!"
+36,2021-06-02 11:30:36+00:00,ellice_marsh,YES why is it illegal to have nude photos of anyone under 18 as it’s child porn however it’s completely legal to have sex with a 16-17 yr old. https://t.co/Kle5sPx9MO
+37,2021-05-31 20:13:00+00:00,Sethiliminal,@Ewanmcgowan19 @SpookyMissYuki @TrollFaceDaddy @MenguinPan My man thats not my morals that's the law. I'm not gonna waste my time to look into the states they were in but I'm guessing age of consent is 16 like normal. That means they could legally have sex but no matter where you are in the country nude images under 18 is child porn
+38,2021-05-31 08:00:29+00:00,Sethiliminal,"@Ewanmcgowan19 @SpookyMissYuki @TrollFaceDaddy @MenguinPan MY DUDE. It doesn't matter whether he had a cp stash or not. It doesn't matter if it's one or multiple. It doesn't matter if a 17 can comprehend sex or not. If he received nudes from someone under the age of 18 it does not matter, it is child porn."
+39,2021-05-31 02:30:52+00:00,999flyhigh,"@WheelBigGame @SpookyMissYuki @TrollFaceDaddy @MenguinPan You make it seem like mans had folers and folders of this shit, he got send 1 nude and didnt save it, thats not ""owning child porn""
+
+What changes in your brain the day before your 18 and the next day witch means the day before you cant comprehend sex and the next day you can??"
+40,2021-05-15 00:37:14+00:00,findlayassholes,"@Queen_vee_three @elextra__ Every adult fucking a child is, in fact, a pedo. Send them to me, I'll post them too. Children fucking each other is NOT a sex crime. Adults sending dick pics to children, or possessing nude images of children, is. Child porn has an age cap of 18."
+41,2021-05-14 17:36:51+00:00,cxrsedbee,"while im on the topic - uk law. the age of consent is 16 when you are having sex with other 16-17 year olds. being under 18 still makes you a minor, and sending nudes is still child porn. and over 18s having sex with you is still a crime."
+42,2021-05-10 06:05:07+00:00,bojack_citizen,@NewNonentities @LIBERTARIAN_NT There's no child porn unles it shows child porn.. if an actual child say a 12 yr old has acted nude in a movie against a naked man and both are blatantly kissing or having sex and it's shown in the film then that movie shd be banned
+43,2021-05-08 01:21:03+00:00,cryptoyuna,"@zak_krevitt Oh I defined have nude art in my work , label that as porn I wouldn’t but to ea h their own. I don’t give flip who embraces what. But I won’t apologize not teach me child to be selling sex . So you can think what you want. I won’t be involved with playboy on any level."
+44,2021-04-30 22:26:57+00:00,kittyclinton2,",@repmattgaetz likes to take nude photos of the women he has sex with. do we dare hope he gets charged with child porn if he photographed that little girl he raped?
+
+how does his  fiance feel about him showing these photos to co workers on the floor of congress?"
+45,2021-04-28 20:37:28+00:00,joepassal,"@Tnags8 @cairichardson @MortalMonaghan @paulo1242396299 @Israell2304 @trump_burner @KEEMSTAR @CallMeCarsonYT Jesus, clearly you guys haven’t been in high school. 12th graders and 9th graders exchange nudes, have sex, etc... The only difference is he’s a public persona. If you’re gonna cancel him, then you might as well launch a federal investigation into child porn in high school. (1/2)"
+46,2021-04-28 18:41:25+00:00,__Saline__,"@LegendCynical @SOLIDNUTTY @KEEMSTAR @CallMeCarsonYT By federal law, the state law has both of them at or above age of consent HOWEVER they are still not an adult, they just can have actual physical sex, so sending nudes is still child porn. I’m not saying Carson is a bad person but he also shouldn’t be defended——"
+47,2021-04-21 21:50:12+00:00,thegarfieldkin,"@ryleenoelle822 @Khendraxo91 Pedophilia, grooming, child porn //
+And we are trying to explain to you that the age of consent doesn’t mean you can send nudes to minors or have them send you nudes back. Age of consent is about physically having sex with someone. Someone can be the age of consent at 16 but -"
+48,2021-04-14 14:58:32+00:00,TrumpDownfall,"@PhoenixLauri @LesNesman2 @ResusCGMedia It doesn't erase the fact #mattgaetz us under federal investigation for sex trafficking minors. If those nudes he showed on the house floor showed minors, you can add distribution of child porn to the mix.
+
+He's scum.
+
+...and toast"
+49,2021-04-13 04:36:05+00:00,Drizzlybear1995,"@maxformi98 @Cryingsince1998 @h3h3productions @FBI No at the federal and state level nudes of anyone under age is considered child porn.
+
+People having sex at 16 with someone close to them in age is legal in some states but child porn is not and it's not in California"
+50,2021-04-13 01:53:49+00:00,mdjgutie,@mattgaetz Are you still paying teens to cross state borders to have sex with you via @Venmo ? Will you continue to show nude photos of girls you're having sex with to your fellow republican members of Congress? Were any of those people underage? because I'm pretty sure that's child porn.
+51,2021-04-12 18:19:26+00:00,Trump4Prison24,"@M16Opatovsky @ReportsDaNews @mattgaetz Paying for sex: illegal
+
+Paying to transport 17 year old across state lines for sex: federal child sex trafficking charges
+
+Nude photos of 17 yr old: federal child porn charges 
+
+Using phone/internet to communicate regarding any of the above: federal charges
+
+Should I continue?🤡"
+52,2021-04-12 18:01:53+00:00,S_Luke_Spencer,"@jbarro It’s a fair point. The age of consent is 16 in many states (and under the UCMJ), which creates some interesting situations legally. So here an e.g. 20yo can legally have as much sex w/ a 16yo as they consent too. Possess a nude sext the 16yo sent on the other hand: child porn."
+53,2021-04-12 13:45:00+00:00,howamialive69,"@sknnybnny Yeah in the uk, you can have sex at 16 but can't send nudes until your 18 as its child porn"
+54,2021-04-11 19:51:18+00:00,dicknapped_,@graciouslygomez i mean it is still considered illegal. its child porn once its a minor (under 18). it think they cant date if they met before the adult became 18. but you cant send nudes or have sex before 18
+55,2021-04-11 18:00:22+00:00,HaydenJ81439319,"@ReeferMadness @Savannahcatmom @JohnCollins_KP You won't say a damned thing about why the laptop was mentioned in the post, mainly that stolen pictures, essentially amounting to homemade porn were shown on nation wide TV to distract from a child sex trafficker flashing nudes on the floor of the House of representatives."
+56,2021-04-09 23:28:44+00:00,AdamAdney85,@bigdweeby @atrupar All that digital dumpster diving on Hunter and the best they could find is a non nude photo of him pulling a (adult) woman's hair... Meanwhile the GOP are being arrested for sex trafficking and child porn.
+57,2021-04-09 14:37:53+00:00,PusheenRage,"Pay any attention to things and you'll find kids on the registry who were charged for  child porn for having nudes of themselves on their own phone!! Yeah sure you should totally want that person to suffer forever. You should want sex workers to be put on a list, as a leftist"
+58,2021-04-08 18:35:53+00:00,ToddDavidAdams,"@ryanobles @PaulaReidCNN I think Gaetz hasn't come to grips with the amount of trouble he may actually be in.
+
+He's alleged to have had sex with a minor. He's alleged to have shown House colleagues nude photos of women he slept with. If that includes the 17-year-old, he's also facing child porn charges."
+59,2021-04-08 15:11:19+00:00,GOPNoMor,@EricG1247 Who are the colleagues to whom Gaetz showed nude photos on the House floor AND why did they not come forward or report this disgusting behavior to @GOPLeader? Why have no Rs spoken out? Or is child porn and sex trafficking the new GOP platform?
+60,2021-04-07 17:07:21+00:00,ScorpioVenom31,"@FoxNews @RepMattGaetz Even IF no 17 yr child involved, no sex trafficking. He OPPOSED the sex trafficking bill &amp; revenge porn bill. The skeez flashed nude photos of conquests &amp; played disgustingly juvenile games. Gives the ""no monk"" defense. Remember Katie Hill?   RESIGN!! 
+https://t.co/shxswMoQ8m"
+61,2021-04-07 00:58:12+00:00,henrykleeKTVU,"Bryan Teed, 26, of Vallejo, a registered sex offender for having child porn - earning him a bad conduct discharge from @USArmy - set to plead guilty to having child porn again, this time for soliciting nude photos of teenage girls via @Kik, per @USAO_NDCA @FBISanFrancisco https://t.co/84eHxQjbw6"
+62,2021-04-02 21:20:49+00:00,rexrode1967,"@AnushayHossain Didn’t they too see child porn and not report it?
+He was showing off photos of nude girls he had sex with 
+@BillPascrell"
+63,2021-04-02 14:52:41+00:00,susanengel14,"So let me understand this fully. It has been alleged that Gaetz dated a 17 year old &amp; had sex with her. If he showed nude photos of her or other underage girls, he was showing child porn to some Congressional Representatives. When has that ever been right? https://t.co/VBJ3Zdw1X4"
+64,2021-04-02 13:35:47+00:00,Laureninlex,"@Wonkette @EvanHurst I wonder if the nude pics were of underage girls? Which would make it child porn, and the house GQP he showed the pics, should all be on the sex offenders registry"
+65,2021-04-02 03:06:44+00:00,kittensnotkids,"@dmihalopoulos @nytimes 17 year old girls are minors, technically children, and the word you keep misspelling as ""have sex with"" is actually spelled RAPE.
+Get your shit together, NOW. People can &amp; do go to prison for having nude photos of minors, it's called child pornography. Girl, rape, child porn."
+66,2021-04-02 00:50:05+00:00,Sand2Stone,"With the fake id developing story with Greenberg and the nude pics and videos of his sex partners shown on the House floor, what are the odds Matt Gaetz showed child porn to other Congressmen?"
+67,2021-04-02 00:39:29+00:00,Oregonizers,"Article says he shows nudes of sexual partners to OTHER MEMBERS OF CONGRESS - are we also looking at potential child pornography distribution? Revenge porn?
+
+Matt Gaetz sex trafficking scandal now includes 'cash and drugs' focus: CNN https://t.co/o7PlSnq3a3"
+68,2021-04-01 23:39:09+00:00,DoubleN2k,"@TeaPainUSA Also, apparently showed photos &amp; videos of nude females he bragged about having sex with to other members of Congress.   I wonder if they were all of age...child porn might soon be added to the allegations.  Total creep!"
+69,2021-04-01 22:38:08+00:00,LauraAliaga2,"Matty Gaetz showing nude photos/ videos of sexual conquests to members of Congress + underage girls = multiple felonies not even related to sex trafficking. I hope some of these assholes shared them, GOP distributing child porn 👌. Qanon bout to lose their collective shit 🤯"
+70,2021-03-24 04:54:13+00:00,seventeenies,"just sex ya maksudnya, ga termasuk nudes / things like that karena itu technically child porn and in some countries if u send nudes as a minor u could get charged for “distribution of child porn”"
+71,2021-03-24 02:04:33+00:00,sweety_dev17,"“ NO CHILD PORN; U will be banned” 
+
+OMG Thank god he said that cuz posting girls nudes/sex tape doesnt matter at all. 😍 
+
+Fuck all those men in such tele/ws grps, i hope your kunji gets bitten off by rats. 🤬 https://t.co/Z81MeeRC5z"
+72,2021-03-20 07:32:58+00:00,Jekklol,"@R__Z__P @Weathered_M @II3138II @GrossieGore Twitch is claiming it wasn't the sex, but the non-consensual sharing of her nudes that got him banned. Even in the UK, age of 18 is legal age for nudes. Can't share child porn"
+73,2021-03-18 23:04:06+00:00,lorybellebelle,"@neverlackin101 @ReiiCakes @h3h3productions @Corpse_Husband @Dream The law disagrees with you. The age of consent applies to sex, not nudes. Graphic sexual imagery of anyone under 18 is still considered child porn according to federal law. Those laws are incredibly strict."
+74,2021-03-16 21:54:51+00:00,majestic_magic,"@memepolice1230 @Godza87853436 @spacetuft @CallMeCarsonYT I agree adults shouldn't have child porn, but children being arrested for having the cp of other children? Or in this case q teen having a slightly younger teen? Someone could become a sex offender for life for trading nudes in middleschool."
+75,2021-03-16 20:17:13+00:00,urmomsboyfrend,Do ppl not know that if nudes are found on your phone when you're a minor or you send to ppl its considered child porn and you can be registered as a sex offender. Pls be safe if you're a minor I've known ppl who got caught and are registered now. /gen /nm
+76,2021-03-16 16:32:11+00:00,thatboikhy,"@AlKaise92111210 @thunderscore6 @ENAK1NNIE @fuckyoulmao6 @Krongus50911 @CallMeCarsonYT Being in a relationship with someone and having sex with someone who can legally consent is one thing, receiving nudes from anyone under the age of 18 is wrong...that's literally child porn."
+77,2021-03-01 07:03:42+00:00,emcroissant,"I know girls who have been put on the registered sex offenders list because they sent a guy a nude and the guy leaked it but because she was a minor at the time, it was considered child porn. So every time they move, they have to tell their neighbors they’re on the list bullshit. https://t.co/BZmENRiENz"
+78,2021-02-27 14:03:59+00:00,JodsterDeluxe,@isiahlove22 Wow look tho sharing nudes and shit is illegal until  ur 18 because it's consider child porn even tho they can legally consent to sex with other minors @ 16 Wonder why https://t.co/775rzcra3p
+79,2021-02-20 16:32:28+00:00,SeraphSancta,"@ChrisRohrer11 @UnicornPoachin @WTigermon @aliciasadowski6 My dude, my guy, my pog champ
+
+Sex workers are people like nude models, onlyfans and porn hub content creators, strippers, etc.
+
+Epstein was a pedophile child traffiker. That's not a job. That's an illegal ring of crime."
+80,2021-02-16 01:40:53+00:00,poorplebeian,"@offbrandhwfix @imayawaya @latenytt @fr0sty___cam @AfroDaddyK27996 @dionysus_XCVII @skaijackson So as a child like you said, posting and liking stuff about sex and nudes (child porn) should have consequences right? According to your own logic. Get off your high horse, people do dumb shit - especially kids https://t.co/9nGFL3y9fC"
+81,2021-02-12 04:21:54+00:00,mwmtalent,"How easily could your young child get on a sex offender registry? Have they:
+- streaked
+- peed in public
+- experimented with friends
+- taken and/or shared nude or provocative selfies
+- showed porn (including your Playboy magazines) to other kids
+
+Many 8 year olds are registrants!"
+82,2021-02-11 03:33:33+00:00,YoItzEman815,@Acronusra @ITakeDump @RyanRedemption2 @CallMeCarsonYT Bro child porn had such a heavy weight to it its ridiculous. Also it's fine for him to have sex with a 17 yo but not receive nude photos. I don't get it.
+83,2021-02-03 20:48:00+00:00,ashley_stallion,"i don't know how many times i feel like i'm going to have to say this but if you're a minor don't take nudes!!!
+
+don't post nudes, don't send nudes, don't ask for nudes!!! 
+
+why you ask? cause you can become a sex offender for creating and distributing child porn."
+84,2021-02-03 12:23:29+00:00,Helen_Atchison,"@mr_zed77 @LarryDraper15 @suelardner @rosemcgowan @killa_cam214 It wans child porn but it was sites he visited of ""teen sex"" in search engines. Then he visited ""adoptable kids"" sites. There were nude kids pictures all over his hotel rooms and in his safe."
+85,2021-01-31 23:52:20+00:00,SarahTheviper,"@DrJenGunter Nudity does not constitute sex.  Look at the work of Sally Mann, she photographed her children nude.  Did this work come under scrutiny by the Feds, yes.  They did nothing because it really isn't intended as porn.  If you read the federal guidelines on child porn, nothing about"
+86,2021-01-30 08:45:44+00:00,Islandgirlpixie,"@Stephaniemgf No one has accused her of sex trafficking or running a kiddie porn site. But legally, any adult who posts a nude/partially nude pic of a minor is guilty of distributing child porn. People are prosecuted for just having it on their hard drive &amp; sending it out is far worse charges."
+87,2021-01-30 02:32:54+00:00,breeeeeaannaa,@CoakleyJoyce @CupChipped @niaacrazyy No it’s still illegal it’s just not enforced. If a cop rlly wanted to they could charge you both for child porn for sending nudes underage and statuatory rape for having sex underage no matter if they’re both minors
+88,2021-01-27 00:34:53+00:00,RumpHead,"@NunesAlt Of she has nude pics of her daughter,  who is a minor btw, whether she posted them or not (she did), she needs to be charged with child porn possession and distribution as well as register as a sex offender."
+89,2021-01-26 21:57:33+00:00,martesyoungberg,"#KellyannConway posting her underage daughter's nudes is not only possession and distribution of child pornography, but also revenge porn for Claudia's accusations of abuse. That woman is a horrible excuse for a mother and needs to be charged as a sex offender."
+90,2021-01-26 18:48:52+00:00,xennial25,"@CommunistsEgirl So is she going to be arrested &amp; charged w/ possessing &amp; distributing child porn?
+
+Cuz there are teens in relationships that stupidly sent nudes that ended up convicted as sex offenders for the same thing."
+91,2021-01-26 16:45:10+00:00,FeathCyndi,@polarsprite Isn't posting nudes of minors a sex offense? Like sharing child porn? Somebody should look into that.
+92,2021-01-24 12:30:33+00:00,asagiribased,"@Jaymyster2 @itssawtie @clarkexedits @emiliodejss @CallMeCarsonYT age of consent for SEX is 16 but 17 year olds are children, so 17 year old nudes are child porn. it’s a confusing and seemingly badly written set of laws but technically he committed a crime by soliciting child porn, even if she consented to it."
+93,2021-01-23 23:09:27+00:00,rabidmonkey,"@hexmaniac666 @Agentmg17 @katy_del_moxie @briskide @redditships my mom worked at a photo finishing plant (where walgreens et all used to send them before they got in house minilabs) and they would print the nudes, but actual sex acts would get back their negatives and a note. anything that looked criminal got reported (child porn, rape, etc.)"
+94,2021-01-22 00:44:10+00:00,bigmoneylasagna,"@Combat_Sphere @DeluxeChin @MohMar2010 @VanYahye @nathbusia @nypost yes. he even asks her ""is it wrong that i only want to talk to you because I'm horny and want to have sex?"" or something along the lines of that. regardless its creepo behaviour and not a ""misdemeanor"" nudes from a 17 year old is literal child porn https://t.co/ypkpe0591U"
+95,2021-01-21 19:15:42+00:00,smoldibs,"Every now and then I remember that the Hortonville PD almost made me register as a sex offender after MY nudes were sent around the high school.
+I was 15 and they blamed me, shamed me, charged me with distributing child porn; while the boys got a slap on the wrist. 
+Fuck you."
+96,2021-01-21 17:55:09+00:00,vitamincharm,"tw/ pedophilia 
+uh even if you don't physically lay hands on a child trying to get that child to send you nude photos and engage in phone sex with you is illegal and your argument doesn't make any sense when child porn is literally what we're talking about lmao? rot https://t.co/0zLCK0aZgD"
+97,2021-01-21 03:52:52+00:00,gunnergoz,"@megbasham @JonahDispatch ""A literal model?"" Really? Who did nude porn photo shoots to earn her right to an ""Einstein visa?"" Who met her future hubby Trump through a child-procurer/sex trafficker named Epstein? Who wore a coat emblazoned ""I don't care, do you?"" That Model? Model of what? Toxic narcissism?"
+98,2021-01-19 11:51:07+00:00,duresport,"@Warriors507 @annkillion No, I’m with you. And women who send nudes are all too likely to be the subject of revenge porn. Keep the pants on. 
+
+Also, if you’re 17, don’t send a d pic to someone you’re going to have sex with, or she’ll get 3.5 years for child pornography even if 17 is the age of consent."
+99,2021-01-19 02:49:21+00:00,kellyjeaaann,"@BreakTheBoxTV @LaunZch @RealAquious @Eszrgy Imagine thinking it’s normal to sext and send nudes to someone who is too young to send them back because it’s child porn
+
+Laws exist so teenagers can have sex with each other not so 27 year olds can take advantage of them"
+100,2021-01-18 23:51:45+00:00,anonofyabiz,"@wabisabimari @rxmchls @saiIorboba But if he possesses any indecent images of her then he will be in possession of child porn because she’s under 18. I’d say if possessing nudes of your partner makes you a sex offender then you should not be dating that person, what do you think?"
+101,2021-01-18 17:50:33+00:00,GlitterGhuleh,"@Kelly1dm @Mdp_coyi66 @DailyMailUK It's not skirting the law if he's been asking for nudes or filming them having sex. Have to be 18 to send indecent pics, so bet ya anything he is in possession of child porn."
+102,2021-01-18 17:49:45+00:00,EESprite,"@HannibalicBarca @chiisaimia @LilMissPegasus If he had sex with her it is rape, dating her meant a sexual interest in a child, any nude pics is child porn (as that is anybody under 18) all child sex offenses. Posting revenge porn of an adult this is a sex offense as well. Some people are defending him."
+103,2021-01-17 20:33:19+00:00,tori_oso,@clarkexedits @CallMeCarsonYT You can legally have sex with a 16 year old but you can't have her nude pictures because thats considered as child porn
+104,2021-01-17 14:03:08+00:00,FrickinCarrie,"I feel for Skai Jackson. People who leak nudes and that sorta shit are the worst kinda people. Hopefully she can sue him for revenge porn, or he gets charged with distributing child porn. Taking advantage of the vulnerability of a person during sex is disgusting."
+105,2021-01-15 21:47:43+00:00,CameliaJuarez,"NEW: White has been charged with recieving &amp; distributing child porn, US Dept of Justice confirmed. Press release says he coerced minors to send nude photos, gave sex devices to minors &amp; showed explicit videos to minors. If convicted, White could face  20 years in Federal prison. https://t.co/zkEybn1qQh"
+106,2021-01-09 20:05:56+00:00,funktastically,@babibunie @Brodie84347499 @Juliesaysfucku @flopmels @parxslutt @CallMeCarsonYT Romeo and Juliet is sex what he did wrong is the nudes/possession of child porn.
+107,2021-01-09 08:22:51+00:00,KeemKreamer,@Skullooky @katohiie @pepegajam @cronieees @Lipptex @KEEMSTAR With the sex part it depends on the age of consent in the state I am not talking about that under the law if you have nudes form someone under the age of 18 that is child porn he was asking young girls for nudes aka child porn
+108,2021-01-09 08:21:02+00:00,Skullooky,"@katohiie @pepegajam @DesmondBarron2 @cronieees @Lipptex @KEEMSTAR 17 year old sending nudes to 19year old, have you been to university. By that logic most of the people there have child porn, even sex with children on a daily basis."
+109,2021-01-07 23:23:54+00:00,Offthepercc,@Meth0dLol @_theofn @zayt At 16 years old in most states you can have sex with adults if you give consent but you cannot send nudes or do pornography as that would be counted as child porn and it would be illegal
+110,2021-01-07 20:37:04+00:00,LexaTerrestrial,"@JeffMerkley @BenSasse : Stop SISEA (Stop Internet Exploitation Act) from Passing - Sign the Petition! https://t.co/9CQKmG2vxm via @Change 
+#stopcensorship #womensrights
+Not only will this attempt to ban Porn but increase child exploitation, unsolicited nudes &amp; sex workers rights"
+111,2021-01-07 19:18:09+00:00,xtcvqz,@dylanprice101 It doesn't matter what the aoc is. They were not having sex they were sending nudes on the phone. It is illegal to keep photos of people who are naked under 18 because it is child porn. It's the fact he used his power dynamic to JUST get nudes out of someone.
+112,2021-01-07 16:31:12+00:00,truegloom,@XLThinOreo @gooseymoos @owoawexi @Ign_m1l0s @ACrubble @GrinSoon @harveytoadface @Twitch The nudes is child porn no matter what the case is underage is underage but you can date but no sex or nudes from the underage person
+113,2021-01-07 13:22:18+00:00,AtelierRingo,"@gimmethefight @Softer_Pink @coolandbased @dirkirai @samuellahey @GrinSoon @harveytoadface @Twitch No, that’s not the point of the Wikipedia article. If the age of consent is 16 year and a 16 year old can agree to sex with a 18 year old then sending nudes consensual  to the same person isn’t child porn otherwise it’s hypercritical that they can consent to sex but not to…"
+114,2021-01-07 12:54:20+00:00,dan_albin,"@Confuse07628626 @voornaz @KrampusJunkrat @melucity @CallMeCarsonYT 19 year old (adult) possessing 17 year old’s (minor) nudes = 2 year difference
+Yes A CRIME (very minor one), true, but how is it disguisting?
+Disguisting can be the name “child porn” as most people associate it with pedophilia but when you’re the age required to have legal sex..."
+115,2021-01-07 08:36:54+00:00,Reaper_616,@MixThatBoi1 @TedNivison Well no cuz the girl we know of lived in a different state witch makes federal law so the age of consent would be 18. But that’s not the point cuz he didn’t have sex with her. But the nudes were straight child porn
+116,2021-01-07 06:01:06+00:00,FiIsPrettyLame,"@APieceOfCrapMan @RiggiSiggi @Petertheguy31 @JamesCu73969744 @TedNivison Hey, you're actually wrong. 17 and 19 are legal to have consensual sex, yes, but 17 is still illegal to send nudes and is considered child porn. Carson has nudes of a 17 year old, which then means he's in possession of child porn."
+117,2021-01-07 05:55:22+00:00,dreamisgay3,@Camerarollings @CallMeCarsonYT carson exchanged nudes with a minor that is considered by federal law child porn so carson will have to register as a sex offender and potential prison time could be given
+118,2021-01-07 03:51:15+00:00,tanimura_123,"@PillsAtWork @mxrphsz @Arsiiine @ifrickedyourmum @KEEMSTAR Noone is okay with child porn, what im saying is why isnt the law philosophically consistent? I would argue having physical sex is worse than jerking off to a nude pic of a 17 yrold? If what makes having nude of 17 yr old worse is cuz he could spread it, then he should only"
+119,2021-01-06 23:54:07+00:00,ShimaKnos,"@HeXz_Golden @CoolDemonTUG @TheActMan_YT Because they may not have been reported, from my personal experience I know someone who was 18, received nudes from a 15 year old and then had to deal with the DA and was labeled a sex offender due to possession of child porn and had to deal with federal charges"
+120,2021-01-06 20:31:29+00:00,ozzagybba,"@nervouswaffle @fuckuforwatudid @GlorifiedHotDog @TedNivison the age of consent for sex is 16, not sexting. it also crossed state lines so romeo and juliet laws dont apply (and they wouldnt have anyway) you legally as a minor cannot consent to any adult have nude or sexual pictures of you like you can consent to sex. its child porn."
+121,2021-01-06 20:14:20+00:00,DistortionHaze,@Gabrielporter8 @CallMeCarsonYT Dude he's still a bad guy he knew she was 17 and admitted to exchanging nudes with her to his friends that's still child porn no matter what and he may face jail time or Fines and sign up to be a sex offender.
+122,2021-01-06 20:13:13+00:00,nottaja,"@Jacalyn82797491 @Wiggingames @llDark_Vibezll @ConnorEatsPants @Slimecicle absolutely not. child porn is child porn. even tho the law exists it doesn’t cover cp. if two minors get caught sending nudes they could be labeled as sex offenders, same with this situation bc no matter the context, it is still naked pictures of an underaged person."
+123,2021-01-06 19:42:38+00:00,gh0stcut,"@JxsseDX .. girl wtf are u on abt. they didnt have sex. they exchanged nudes, which is distributing child porn bc shes under 18. that and the abuse of power are why ppl r mad"
+124,2021-01-06 19:03:22+00:00,midnightcandyyy,@LeBronCranberri @Bombskeiz @SH0T2RMMBR 17 is considered a CHILD that is child porn. 17 and 19 is legally aloud to date and have sex but sending nudes can still land both child and adult as a registered sex offender
+125,2021-01-06 18:19:39+00:00,Myskinispurple,@lilakhtarr @parxslutt @CallMeCarsonYT Her ability to consent to sex has no bearing on whether or not her nudes would be considered child porn. It's child porn if it's a sexual image of someone under the age of 18 in every state all across America.
+126,2021-01-06 10:35:07+00:00,xDialga12,"@KnMental @KEEMSTAR Carson wanted to exchange nudes with the girls, he didn't aim to have sex with them, you have to be over the age of 18 to send nude photos of yourself or it is literally child porn"
+127,2021-01-06 09:21:41+00:00,ImMattBurton,"@timehasfaded @Its_Jawsh Sex with a 17 y/o is legal in Indiana, yes. Exchanging nudes with a minor is child pornography and is illegal. 
+
+There is also a moral issue in him sexting a fan. He has much more power in that dynamic and it could be viewed as immoral to some. 
+
+Mostly the child porn tho."
+128,2021-01-06 07:59:34+00:00,MrBeeson20,"@KEEMSTAR SHE'S 17 FFS!!! 🤦🏻‍♂️🤦🏻‍♂️ In a court of law it would not be considered as distribution of child porn, how dumb do you think that rule is? He could go to her house and have sex with her completely legally but if he they exchange nudes it's illegal? 🤦🏻‍♂️ Stop trying to ruin this mans...."
+129,2021-01-06 06:19:05+00:00,1ceYourPimpHand,"@bestmanaround8 @S0ggies @kevolives @KEEMSTAR We shouldn't be concerned about it being ""child porn"" because it's a ridiculous law that he can have sex with a 16 year old (in his state), but not have nude photos of that same person."
+130,2021-01-06 05:56:36+00:00,the_comidenan,@Autumn_Constant Well Carson admitted to exchanging nudes and she is a minor so he would be in possession of child porn and if he sent nudes back he could be classified as a sex offender
+131,2021-01-06 05:31:09+00:00,queernthensome,"@klindamisin1 @miniborb He used his fame to solicit sexual pictures of a minor. Aka child porn. If there was anything besides Carson wanting sex, it’s be a bit weird and still kinda wrong but ultimately legal. It’s the nudes that make it a federal crime."
+132,2021-01-06 03:27:36+00:00,CHlLLDAD,"@DisgustingKale @charmance360 @goonkler @Cuzhe_Lots @ItsJoko That's not strictly true. In many states a 17 year old and a 19 year old can legally have sex. The problem arises when there are nudes involved, because pictures sent to her would be illegal (don't know what it's called) and receiving her pictures would be considered child porn."
+133,2021-01-06 03:23:04+00:00,Benjamn17127812,@NOR_Liv_Ros @voodoosev @GameCreepr @Krinios its about nudes not sex idiot. any nude pictures of someone under 18 qualifies as possession of child porn
+134,2021-01-06 01:24:11+00:00,buprl,"@Kartofi1 @Slimecicle I can't say for sure but if she was 17 when she sent and received nudes then it is illegal. She can have sex but she cannot send or receive nudes even if she consented. That would still mean Carson would be in possession of and distributed child porn, I think."
+135,2021-01-05 21:33:41+00:00,lulBritz,"@SirWahluigi romeo and juliet laws applies when people have sex, which they didnt. he got nudes and that means its child porn under federal law"
+136,2021-01-05 21:06:21+00:00,qwertykey137,"@CherryBirdHorse @Ciwi_Sketches @ChrisRGun No I’m saying that many famous people have used their fame for sex, which is manipulation especially in the way carson groomed a minor into giving him nudes, which is child porn."
+137,2021-01-05 20:47:28+00:00,Chrisandallthat,@john34469771 @supersalty94 @Boogie2988 the thing is is that they literally didnt have sex. if they did then it would be a different story. however they traded nudes. that’s considered child porn
+138,2021-01-05 20:35:49+00:00,mattyt2804,@GrimSenpaii @HoldenBman She was a fan and he was her favorite content creator. If you can’t see how that power dynamic is fucked then there’s something wrong with you. Also nudes from anyone under 18 are child porn whether her state said she could consent to sex at 17 or not.
+139,2021-01-05 19:44:51+00:00,Duncangjjs,"@OnurbLepocs @VelvetSilver1 @81sonof81 @IWDominateLoL Because in America, Canada and the UK (and prolly most of the EU but idk) sending nudes when u are &lt;18 is considered distribution of child porn. You can consent to sex at 16 (within limitations), but any sexually explicit photos with a subject under 18 is CP"
+140,2021-01-05 19:38:40+00:00,CitharaNeedsSub,"@Sonnchi_ age of consent only applies for sex, not exchanging nudes, any nude photo of somebody under 18 is considered child porn under federal law."
+141,2021-01-05 19:08:06+00:00,xndrew21,@SlackerJack @Mikkis_Cottage sex is but nudes are still child porn. Also the power dynamic in the relationship is not ok
+142,2021-01-05 18:20:12+00:00,LurkestK,"@objKaden @ratta_tatta Yeah but those laws are referring to sex and actual relationships. This dude got nudes from someone who's under 18, a minor, that's child porn. Plus it's not like they were two teens from school that fell in love or something, she was a fan of his, making it a power dynamic."
+143,2021-01-05 18:04:10+00:00,SauceFinder2,@michael_pajak @twtDevil @blckedgee @NotWeslee @CallMeCarsonYT But it’s true everyone in my high school who’s 18 should be arrested for having sex with there 17 year old boyfriends and girlfriends technically everyone in my highschool has child porn due to the nudes they send we should alll be arrested for statutory rape
+144,2021-01-05 17:43:01+00:00,haterdanielle,"tw: cmc , nsfw just so y’all know, romeo and juliet laws only count for consensual sex. there are no ordinances concerning sexting or the possession of child porn. if he got nudes from a minor, shit is illegal, point blank period."
+145,2021-01-05 17:42:38+00:00,Kekero63,@hid3away_ @CountDankulaTV So two people can have sex but can’t share nudes when they’re both 17 and will be charged with production of child porn? Guess we have to arrest 1/4th of all high schoolers.
+146,2021-01-05 17:36:44+00:00,cockobig,"@SomberPlaysU @wuju__ @katarasquirk @__EmilylimE__ @Leeeeheeee ive been reading up on it, and I found a screenshot the victim posted. They could have legally had sex but him getting nudes from her was child porn https://t.co/NHNFK3nrUm"
+147,2021-01-05 17:04:42+00:00,cockobig,"@_stevenschwartz @Phuton9 she was 17, so legally they could have sex, but they sexted and exchanged nudes which is classified as child porn if you are under 18 no matter what"
+148,2021-01-05 16:37:48+00:00,JoeNutz17,"@disparate_broom @its1134pm @thegoldcapybara @2383Clarence @TheActMan_YT Not pedophilia dipshit. Its child porn, and sending nudes to a minor. They could have all the steamy sex they wanted but sending nudes is illegal."
+149,2021-01-05 16:30:47+00:00,bean_thick,"@JocelynnFlorez @FpsPayton @NicholasRavenc1 @miniborb yes. they could have sex. what they cant do is send nude photos. Nude photos of someone under 18, in any state, are child porn."
+150,2021-01-05 15:41:48+00:00,oversizedturtle,"@Stephen_Fremel @MoistCr1TiKaL this entire controversy also made me realize how stupid the whole child porn laws are
+if your in a relationship with a 19 year old, and your 17, your able to have sex, but you aren’t able to share nude photos with each other
+yep makes perfect sense no issues at all"
+151,2021-01-05 15:21:45+00:00,KaeLynnKLS,"@itskobrakat @pixelcasio @OkMaybeNotTho @TheAdamOfApples @ItsJoko You do know that it is ""illegal"" for a minor to send nudes at all, right? Like if 2 sixteen yr olds exchange nudes then they are in possession of ""child porn"" and can be, and have been, placed on the sex offender registry. Legality and morality aren't the same thing."
+152,2021-01-05 14:59:43+00:00,lingussv2,@solutoh Age of consent is a tricky one because they didn’t have sex. However there were nudes involved which is child porn. She’s 17. Carson is a weird bloke.
+153,2021-01-05 14:01:49+00:00,BunnyJ001,"@KEEMSTAR Age of consent is 16 , sexting online is 18+ ,  if he sent her nudes that illegal as she is seen as a minor for sexting online . If she sent nudes to him which he asked for , even if she is 17 , it’s class as child porn. The law is u can have sex at 16 but not sexting till 18+"
+154,2021-01-05 13:28:41+00:00,DanteApproves,"@cringepolitik also even if you ignore the power dynamic (which u shouldn't do obviously im just using it as an example) Carson still committed a crime by receiving and sending nudes to a minor, legally they can consent to sex but it is still child porn if they are 17"
+155,2021-01-05 12:38:59+00:00,SauceFinder2,@B1Sniper1 @KEEMSTAR Yes but he’s not allowed to have her or send her nudes cause it’s child porn even if they are dating now if they had sex I think it’s ok but I’m not sure it’s a huge grey area
+156,2021-01-05 12:24:04+00:00,Denkers52,"@laviilmari @CallMeCarsonYT There's a stark difference here because it would've been fine if it was sex, because most states age of consent sits at 16-17 but what he did was receive nudes, which from someone under 18 is child porn. I personally don't think he's a pedo, rather he just saw an opportunity."
+157,2021-01-05 12:04:45+00:00,hellokittystea,@Bears_SZN_ @ItsJoko you’re thinking of the age of consent to ACTUAL sex. the age of consent for sexting over any platform is 18. no matter what state you’re in. if you have nude pictures of someone a week before 18 that is STILL CONSIDERED CHILD PORN.
+158,2021-01-05 09:55:15+00:00,hxnda29,"@JoshuaJ88535496 @Agentcope_Rocks @pixelcasio @ItsJoko they can date and have sex, but the sophomore cant legally send nudes to ANYBODY, because a naked picture of a 15-16 year old is child pornography, and if the senior hasnt turn 18 yet, their nudes are child porn too."
+159,2021-01-05 08:28:30+00:00,PR1SM4RINE,"stuff isnt a joke. it shouldnt be taken as such. its illegal. its at minimum 6 years in prison, since if they got nudes from a minor its child porn. and they'll forever be on the sex offender registry. most people dont do this bullcrap for fun. its not fun. our trauma-"
+160,2021-01-05 08:07:20+00:00,BittiesBody,@MrRecktIsBack yes!! if people plan to have sex with a minor send explicit photos to a minor send nudes to a minor with or without their consent its still bad as an adult if a child has a crush on you its important to remove yourself from that situation not try to send them porn tf
+161,2021-01-05 07:41:24+00:00,liamtdunn,"@Cyber_triz @Its_Jawsh the consent law in indiana is for sex, but not for sexting/nudes. Indiana has this weird thing where they charge for child porn but not underage intercourse."
+162,2021-01-05 06:42:35+00:00,Oneiorosgrip,"@Zachariahskylab @naeriface @undeadscribe @colorblindk1d @0Zakyr @HeadHatchet Dumb thing is, a 17 yo can actually consent to sex in many US states (16 in several,) but if he or she creates a nude or even partially nude selfie, that's illegal and the 17 yo can get arrested for creating child porn. You know, for their own protection. 🙄"
+163,2021-01-05 06:25:03+00:00,PeppermintAlli,@hxgxgxgxggxgx @miniborb That applies for sex not nudes. He still received child porn.
+164,2021-01-05 06:10:56+00:00,Trojan_z1,@xDilltron @XarmenKarshov @Diegster101 @Its_Nowah @KEEMSTAR No sex is fine but when you’re under 18 you can’t send nudes or sext because that’s still considered child porn. I don’t make the law I’m just saying it
+165,2021-01-05 06:06:01+00:00,PeppermintAlli,@keanu_and @fIamangoes Age of consent is for sex not for nudes. He still recieved child porn. Age of consent doesnt matter here.
+166,2021-01-05 05:48:16+00:00,Bunerellla,"@miniborb I've seen a lot of people talk about romeo and juliet laws and such, but I think everyone is ignoring the fact that someone 18+ receiving/requesting nudes from someone -18 legally, makes it child pornagraphy. If a minor posts a sex tape or sends nudes, its child porn. You have to"
+167,2021-01-05 05:14:13+00:00,filaceouss,"@MiloSucksAlott @That_Guy_D_C @lRozenl @KEEMSTAR the age of consent doesnt matter, that refers to sex not porn. you HAVE TO BE 18 TO SEND NUDES AND SEXT. that's why you dont see people under 18 on p0rn sites. no matter age of consent, under 18 is child porn."
+168,2021-01-01 02:41:25+00:00,tame_lioness,"@fontana_rosa2 I'm nearly 60, and have enjoyed and created porn, and hired sex workers. I'm happily married for nearly 30 years, and retired from a successful IT career. Did I feel empowered (and do I still) modeling for sexy nudes? Yup. You, child, do not get to police my sexuality."
+169,2020-12-29 06:09:22+00:00,CoreyPitcher6,@Sir_Sky_Knight @IndominusKeaton @Tombutu @KEEMSTAR @MiniLaddd minors can't consent. they were minors and it wasn't just conversation he sent and received nudes from ash which is child porn. he had also tried meeting up with ash for sex which again is illegal
+170,2020-12-25 18:41:31+00:00,AW60,"@wdunlap @VHayek214 @JoeBiden ""I grab em by the pussy""
+""I had sex with a porn star when my wife was home with my month old child.""
+""I paid for an abortion because I didn't want to pay child support to a 2nd rate nude model."""
+171,2020-12-24 05:58:16+00:00,RANBR1M,"@juniperxd_ it’d be legal for them to have sex bc of the romeo and juliet law or whatevr so i assume they could date, too ?? if the 17 year old sent nudes or smth they’d still be child porn which is illegal but they can still date i think 👍"
+172,2020-12-20 08:13:07+00:00,girlcatspit,"didn't miss girl delphine sell and steal money from OTHER sex worker's sexual content AND sell nudes of herself as a minor, supporting child porn, and scam people over 'bathwater' but...we jus gonna give her the pass? 💀"
+173,2020-12-17 05:18:38+00:00,KistnerMarcia,@MollyJongFast Because they would appreciate nude photos more. Remember how many white trumpers have been charged for sex trafficking and child porn? Real achievement and intelligence mean nothing to them. Damn misogynists.
+174,2020-12-14 16:20:40+00:00,MagentaRenae,@VICE Isn't this...good? Because wasn't there like a child porn problem? And people having their nudes and videos of them having sex leaked?
+175,2020-11-22 16:57:29+00:00,ichriecheblut,"y’all love reposting unidentifiable nudes as well knowing the statistics of sexual assault, revenge porn, and statutory. supporting sex workers is an important key to keeping child porn out of circulation."
+176,2020-11-20 22:04:56+00:00,spiceslag,"TW // child porn, IBSA
+
+the first time i was asked for nudes, i was 13. he was 18. he texted me on every site i was on. threatened to tell everyone i had sex with him because i wouldn’t send him nudes. so i did. a quick wank for him. immeasurable guilt for years for me. 
+if that"
+177,2020-11-09 05:23:43+00:00,DreamMoonStudio,"@NoaV69866718 @ashleelilliex Just like if a 15 yr old passed a nude of another 15 yr old to someone else or posted it. They can be charged for distributing child porn.  
+
+19 does not make her a minor, you know the legal age for sex is 18 right? At 18/19 your an adult."
+178,2020-11-03 00:19:47+00:00,__MrAnderson___,@Adrian_Trident Oh I know. There's a lot of fucked up states for sure. In those states where legal age of consent is 16 they can still be arrested for sending nudes as it falls under child porn but they can legally have consensual sex. It doesn't make any fucking sense to me
+179,2020-10-29 14:04:01+00:00,hidingfromlibs,"@mjv_2000 There are multiple images of child porn and other sex tapes on the laptop apparently. All I can say I’ve seen with my own eyes is the “foot job” video below, in which you can’t see the other person. Have also seen multiple nudes of his. I’m a brand new conservative as of a few..."
+180,2020-10-28 14:36:09+00:00,StevenR94967042,"@chrishansen Hey Chris, is there anything going on with @MiniLaddd ? The man admitted to having child porn, sending nudes to minors, blackmailing and mentally abusing minors, admitted to trying to have sex with a minor when she was on vacation, and he isn't being punished."
+181,2020-10-28 02:35:27+00:00,meaganryan,"@MFrance923 @JoeBiden Apparently you’ve never heard any other man say dumb shit like that -so you think it’s ok that the son of Joe Biden is pictured nude, in sickening acts with his minor niece and then Joe tried to cover it up? You think Trump saying that is terrible? While child porn/sex is fine?"
+182,2020-10-24 01:26:09+00:00,CatDaddio_esq,"@Tolbtown @CoolerThanAnna @Legion_Slayer17 Ummm he def had sex with a minor here in CA. 17 at the time. Thats v illegal. But he may get off that cause its past the statute of limitations. But potentially for stealthing. 
+
+Also nudes of minors? Thats child porn, my dude."
+183,2020-10-22 00:03:50+00:00,Ash_amoLH,@prollynotJasn @JAYVERSACE @gustavitoo_97 @LilNasX 15 is under the age of legal consent so that's legally pedophilia. A girl at my school got caught sending nudes to some guys by their mom's and the mom's pressed charges and the girl went to juvy as a sex offender at 14 for distributing child porn. The boys were the same age
+184,2020-10-22 00:01:11+00:00,Ash_amoLH,"@prollynotJasn @JAYVERSACE @gustavitoo_97 @LilNasX Just so y'all know, sending nudes as a minor or even possessing nudes of yourself on your phone is a felony and counts as distributing child porn and you can be put in a sex offender list for that. Hell watching a 15yr old masterbate ( he did as a minor) counts as pedo"
+185,2020-10-21 02:05:56+00:00,2kiwi31,Cough cough. Ahem... Nothing to see here. Can’t a man who buys the silence of porn stars that he raw dogged- take his former nude model immigrant wife who he was cheating on - to hang out with a couple who happen to be 2 of the largest known child sex traffickers in the world?! https://t.co/xSSlaTHlCm
+186,2020-10-18 22:01:09+00:00,b3llemarie,hope people who spread someone’s nudes during school know that they’re a literal sex offender and have child porn saved in their files🤠
+187,2020-10-18 20:44:51+00:00,Stephanierhoa10,"@fred_guttenberg @RonJohnsonWI They ALWAYS Project; only trump’s done things I don’t see how anyone can still support him:
+Paid off porn star with checks signed in Oval Office.
+Ogling nude teenage girls at his pageants.
+Personal friend of child sex abuser Epstein.
+20+ accusations of sexual assault"
+188,2020-10-10 09:14:55+00:00,MisticSar,"@unibunni_xo @janevaquoi @yoyopullerz Yes, that’s why he shouldn’t be equating a nude child to porn. But nudity any time does not automatically equal porn. We over sexualize too many things that have nothing to do with sex and it produces weird thoughts like what happened here. Could have been: our little sunbather."
+189,2020-10-08 12:00:52+00:00,WendyLouWho11,"@HeathHall78 @OTR2Victory @BoobieMilesXXIV @Mike_Pence @KamalaHarris Let me remind you @FLOTUS is the only First Lady that many Americans have seen nude! Soft porn &amp; close friends with alleged child sex trafficking prisoner Ghislaine Maxwell 😂😂😂
+You really went there LOL!"
+190,2020-10-07 21:26:10+00:00,CatDaddio_esq,"@CaptainFreak13 @HaydenBoug @TeachSUFC @akratic_ If you own/possess a photo or video of someone who is under the age of 18 at the time of the photo (nude, somewhat nude, doing sex. acts, etc) then its possession child porn. Cut and dry."
+191,2020-09-29 16:12:32+00:00,margaretloyd8,"@realDonaldTrump sexual abused 20 women to include a rape of a 13 yr old child, while Trump committed adultery with so many women while married, while Trump had sex with porn stars while nude model porn #flotus was pregnant  - the conservative Christians are morons https://t.co/yAf58RwRog https://t.co/31E3uXXQ5i"
+192,2020-09-28 16:49:03+00:00,JMaddened,@A10Jim @irritatedwoman @BreitbartNews I agree! He’s creep as hell. He admits to grabbing women by the genitals. Walking in on underage girls who are nude. He paid for sex with a porn actress while his 3rd wife was at home with his child. He lies daily. Absolutely disgusting. But what are your thoughts on Biden?
+193,2020-09-28 14:07:33+00:00,TheRealDrGero,"@Mizuwali The is really some legal problems with countries like USA, UK and Australia. It's actually a witch hunt and young looking doll can be now a serious problem not only with customs but it also can be considered as child porn if the depiction is nude or sex related."
+194,2020-09-26 12:54:12+00:00,FO_Woolverton,"@PeteKaliner Meanwhile, boys &amp; girls age 16 or 17 can be charged as adults with felony manufacturing &amp; possessing child porn if they take selfie nude photos.
+
+And distributing if they give pix to each other.
+
+Raise the Age law did not change this. Conviction includes sex offender registration"
+195,2020-09-25 05:22:30+00:00,unhelpfullcow,"@LilJoePunches @AHRabbitGuy @jessix_tv i compleatly agree that that is wrong and child porn. HOWEVER none of them are doing that,,,, it’s just talking about sex and talking about being horny? not posting nudes at all? i challenge you to find even ONE minor who’s posting nudes"
+196,2020-09-25 03:14:36+00:00,F0xyG4mer,"@DiddlyDonger It depends on the child.  
+Child.
+CHILD. 
+Yes we reach sexual maturity at different ages. Doesnt mean that sex under (Insert your countrys age of consent here) is legal. 
+If you can get done for kiddy porn if they send you a nude they can't consent."
+197,2020-09-20 14:13:56+00:00,WeirdCatHQ,"Doing/drawing sexual acts does not make me dangerous around children-
+Like you know 90% of all parents ever have had sex right?? Some of them have even taken nudes! Omg! Porn! How could they possibly be trusted around a child?!"
+198,2020-09-20 13:28:47+00:00,divergent_s0ul,And stop blaming “fast” little girls. It’s still our responsibility as ADULTS to say no. The sex isn’t worth your freedom &amp; if she sends you nudes at that age it’s CHILD PORN. Don’t be that guy. https://t.co/rh86XPuIQB
+199,2020-09-18 03:05:50+00:00,notgiveroff,"@CJ60564675 @chicagotribune Sex consent got nothing to do with producing child porn, duh. There is no ""minimum age"". A teen send nude to another teen the other teen must immediately delete it or gets charged. And it happened."
